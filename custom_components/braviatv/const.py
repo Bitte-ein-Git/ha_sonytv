@@ -10,6 +10,7 @@ ATTR_MAC: Final = "macAddr"
 ATTR_MANUFACTURER: Final = "Sony"
 ATTR_MODEL: Final = "model"
 
+CONF_ENABLE_USER_LABELS: Final = "enable_user_labels"
 CONF_NICKNAME: Final = "nickname"
 CONF_USE_PSK: Final = "use_psk"
 

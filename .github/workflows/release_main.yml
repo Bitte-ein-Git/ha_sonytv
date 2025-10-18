@@ -1,9 +1,12 @@
-name: Release » 'main'
+name: "🌀 New release » 'main'"
 
 on:
   workflow_dispatch:
-  release:
-    types: [published]
+    inputs:
+      release_ver:
+        description: 'Version tag'
+        default: ""
+        required: true
 
 jobs:
   release-zip:
@@ -21,6 +24,6 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ github.workspace }}/custom_components/braviatv/braviatv.zip
-          asset_name: braviatv.zip
-          tag: ${{ github.ref }}
+          asset_name: sonytv.zip
+          tag: ${{ inputs.release_ver }}
           overwrite: true

@@ -1,11 +1,12 @@
 {
   "domain": "braviatv",
-  "name": "Sony Bravia TV",
-  "codeowners": ["@bieniu", "@Drafteed"],
+  "name": "🗿• Sony TV +",
+  "codeowners": ["@Bitte-ein-Git", "@elias1731", "@bieniu", "@Drafteed"],
   "config_flow": true,
-  "documentation": "https://www.home-assistant.io/integrations/braviatv",
+  "documentation": "https://github.com/Bitte-ein-Git/ha_sonytv",
   "integration_type": "device",
   "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/Bitte-ein-Git/ha_sonytv/issues",
   "loggers": ["pybravia"],
   "requirements": ["pybravia==0.3.4"],
   "ssdp": [
@@ -13,5 +14,6 @@
       "st": "urn:schemas-sony-com:service:ScalarWebAPI:1",
       "manufacturer": "Sony Corporation"
     }
-  ]
+  ],
+  "version": "1.0.0-stable"
 }

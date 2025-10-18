@@ -10,6 +10,7 @@ from aiohttp import CookieJar
 from pybravia import BraviaAuthError, BraviaClient, BraviaError, BraviaNotSupported
 import voluptuous as vol
 
+from homeassistant import config_entries
 from homeassistant.config_entries import SOURCE_REAUTH, ConfigFlow, ConfigFlowResult
 from homeassistant.const import CONF_CLIENT_ID, CONF_HOST, CONF_MAC, CONF_NAME, CONF_PIN
 from homeassistant.helpers import instance_id
@@ -26,6 +27,7 @@ from .const import (
     ATTR_CID,
     ATTR_MAC,
     ATTR_MODEL,
+    CONF_ENABLE_USER_LABELS,
     CONF_NICKNAME,
     CONF_USE_PSK,
     DOMAIN,
@@ -42,6 +44,13 @@ class BraviaTVConfigFlow(ConfigFlow, domain=DOMAIN):
         """Initialize config flow."""
         self.client: BraviaClient | None = None
         self.device_config: dict[str, Any] = {}
+
+    @staticmethod
+    def async_get_options_flow(
+        config_entry: config_entries.ConfigEntry,
+    ) -> BraviaTVOptionsFlow:
+        """Get the options flow for this handler."""
+        return BraviaTVOptionsFlow(config_entry)
 
     def create_client(self) -> None:
         """Create Bravia TV client from config."""
@@ -254,3 +263,32 @@ class BraviaTVConfigFlow(ConfigFlow, domain=DOMAIN):
         """Handle configuration by re-auth."""
         self.device_config = {**entry_data}
         return await self.async_step_authorize()
+
+
+class BraviaTVOptionsFlow(config_entries.OptionsFlow):
+    """Handle Bravia TV options."""
+
+    def __init__(self, config_entry: config_entries.ConfigEntry) -> None:
+        """Initialize options flow."""
+        self.config_entry = config_entry
+
+    async def async_step_init(
+        self, user_input: dict[str, Any] | None = None
+    ) -> ConfigFlowResult:
+        """Manage the options."""
+        if user_input is not None:
+            return self.async_create_entry(title="", data=user_input)
+
+        return self.async_show_form(
+            step_id="init",
+            data_schema=vol.Schema(
+                {
+                    vol.Required(
+                        CONF_ENABLE_USER_LABELS,
+                        default=self.config_entry.options.get(
+                            CONF_ENABLE_USER_LABELS, True
+                        ),
+                    ): bool,
+                }
+            ),
+        )
